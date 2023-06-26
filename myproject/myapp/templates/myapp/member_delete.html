@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Member</title>
+</head>
+<body>
+    <h1>Delete Member</h1>
+    <p>Name: {{ member.name }}</p>
+    <p>Email: {{ member.email }}</p>
+    <form action="{% url 'member_delete' pk=member.pk %}" method="POST">
+        {% csrf_token %}
+        <p>Are you sure you want to delete this member?</p>
+        <input type="submit" value="Delete">
+    </form>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "myapp/master_template.html" %}
+
+{% block title %}
+Sunratu-Django
+{% endblock %}
+
+{% block content %}
+
+    <h1>Update Product</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update">
+    </form>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "myapp/master_template.html" %}
+
+{% block title %}
+Sunratu-Django
+{% endblock %}
+
+{% block content %}
+
+<div class="container" style="background-color: aliceblue">
+  <div class="row text-center" style="padding: 10px">
+    <div class="col">
+      <h2 class="">Welcome to sunratu shop,</h2>
+      you can buy anything about clothes, tshirt, pant, trousers, and etc.
+      <div class="container-body">
+
+        <div class="row" style="padding: 10px">
+            {% for data in gambar_home_atas %}
+            <div class="col">
+              <img 
+              src="{{ media_url }}{{ data }}" 
+              class="img-thumbnail rounded" 
+              alt="satu"
+              data-toggle="modal" 
+              data-target="#myModal" />
+            </div>
+            {% endfor %}
+        </div>
+
+          <div class="row" style="padding: 10px">
+            {% for data in gambar_home_bawah %}
+            <div class="col">
+              <img src="{{ media_url }}{{ data }}" class="img-thumbnail rounded" alt="satu" />
+            </div>
+            {% endfor %}
+          </div>
+            
+        <h3>
+          Kami juga bisa melayani pembelian secara online dengan cara sebagai
+          berikut :
+        </h3>
+        
+        <h5>
+          Silahkan Pilih Baju kesayangan anda, screen gambar dan kirimkan<br />
+          ke customer service kami
+          <span class="blink_me">via Whatsup : 0853 3832 1400</span>
+        </h5>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Header Modal -->
+        <div class="modal-header">
+          <h4 class="modal-title">Gambar Modal</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Body Modal -->
+        <div class="modal-body">
+          <img src="path/to/your/image.jpg" alt="Gambar Modal" class="img-fluid">
+        </div>
+        
+        <!-- Footer Modal -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+    
+{% endblock %}

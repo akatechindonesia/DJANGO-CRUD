@@ -1,0 +1,50 @@
+{% extends "myapp/master_template.html" %}
+
+{% block title %}
+Sunratu-Django
+{% endblock %}
+
+{% block content %}
+
+<div class="container" style="background-color: aliceblue">
+  <div class="row text-center" style="padding: 10px">
+    <div class="col">
+      <h2 class="">Welcome to sunratu shop,</h2>
+      you can buy anything about clothes, tshirt, pant, trousers, and etc.
+      <div class="container-body">
+        <div class="row" style="padding: 10px">   
+            <h1>Member List</h1>
+            <a href="{% url 'member_create' %}"><button class="btn btn-success">Tambah Member</button></a>
+            <table class="table table-striped" style="width: 60%;" align="center">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ member.name }}</td>
+                    <td>{{ member.email }}</td>
+                    <td>
+                        <a href="{% url 'member_detail' member.id %}" class="btn btn-primary btn-sm">View</a>
+                      <a href="{% url 'member_update' member.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <form method="POST" action="{% url 'member_delete' member.id %}" style="display: inline;">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                      </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+      </div>
+    </div>
+  </div>
+</div>
+    
+{% endblock %}
