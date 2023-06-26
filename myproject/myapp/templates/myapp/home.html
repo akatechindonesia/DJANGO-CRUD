@@ -14,10 +14,10 @@ Sunratu-Django
       <div class="container-body">
 
         <div class="row" style="padding: 10px">
-            {% for data in gambar_home_atas %}
+            {% for data in products_part1 %}
             <div class="col">
               <img 
-              src="{{ media_url }}{{ data }}" 
+              src="{{ media_url }}{{ data.image }}" 
               class="img-thumbnail rounded" 
               alt="satu"
               data-toggle="modal" 
@@ -27,9 +27,9 @@ Sunratu-Django
         </div>
 
           <div class="row" style="padding: 10px">
-            {% for data in gambar_home_bawah %}
+            {% for data in products_part2 %}
             <div class="col">
-              <img src="{{ media_url }}{{ data }}" class="img-thumbnail rounded" alt="satu" />
+              <img src="{{ media_url }}{{ data.image }}" class="img-thumbnail rounded" alt="satu" />
             </div>
             {% endfor %}
           </div>

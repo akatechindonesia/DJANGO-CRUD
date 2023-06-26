@@ -5,11 +5,11 @@ from .models import Member
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('name', 'price')
+        fields = ('name', 'price','deskripsi','image')
 
 
 class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ('name', 'email')
+        fields = ('name','gender','phone','email')
 

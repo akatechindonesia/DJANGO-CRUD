@@ -15,12 +15,14 @@ Sunratu-Django
           <div class="row" style="padding: 10px">   
             <h1>Product List</h1>
               <a href="{% url 'product_create' %}"><button class="btn btn-success">Tambah Produk</button></a>
-              <table class="table table-striped" style="width: 60%;" align="center">
+              <table class="table table-striped" style="width: 90%;" align="center">
                   <thead>
                   <tr>
                       <th>No</th>
                       <th>Nama</th>
                       <th>Price</th>
+                      <th>Deskripsi</th>
+                      <th>Gambar</th>
                       <th>Action</th>
                   </tr>
               </thead>
@@ -30,6 +32,10 @@ Sunratu-Django
                       <td>{{ forloop.counter }}</td>
                       <td>{{ product.name }}</td>
                       <td>{{ product.price }}</td>
+                      <td>{{ product.deskripsi }}</td>
+                      <td>
+<img src="/media/{{ product.image }}" style="width: 100px;" class="img-thumbnail rounded" alt="{{ product.image }}" />
+                        </td>
                       <td>
                           <a href="{% url 'product_detail' product.id %}" class="btn btn-primary btn-sm">View</a>
                         <a href="{% url 'product_update' product.id %}" class="btn btn-warning btn-sm">Edit</a>

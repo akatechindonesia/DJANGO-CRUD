@@ -15,11 +15,13 @@ Sunratu-Django
         <div class="row" style="padding: 10px">   
             <h1>Member List</h1>
             <a href="{% url 'member_create' %}"><button class="btn btn-success">Tambah Member</button></a>
-            <table class="table table-striped" style="width: 60%;" align="center">
+            <table class="table table-striped" style="width: 80%;" align="center">
                 <thead>
                 <tr>
                     <th>No</th>
                     <th>Nama</th>
+                    <th>Gender</th>
+                    <th>Phone</th>
                     <th>Email</th>
                     <th>Action</th>
                 </tr>
@@ -29,6 +31,8 @@ Sunratu-Django
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ member.name }}</td>
+                    <td>{{ member.gender }}</td>
+                    <td>{{ member.phone }}</td>
                     <td>{{ member.email }}</td>
                     <td>
                         <a href="{% url 'member_detail' member.id %}" class="btn btn-primary btn-sm">View</a>

@@ -8,13 +8,14 @@ from django.conf import settings
 import os
 
 def home(request):
-    gambar_home_atas = ["1.jpg", "2.webp", "3.jpg", "4.jpeg", "5.jpeg"]
-    gambar_home_bawah = ["6.jpg", "7.jpg", "8.jpg", "9.jpg", "10.jpg"]
+    all_products = Product.objects.all()[:10]  # Retrieve the first 10 products
+    products_part1 = all_products[:5]  # Retrieve the first 5 products
+    products_part2 = all_products[5:]  # Retrieve the remaining 5 products
     media_url = settings.MEDIA_URL
     context = {
         'media_url':media_url,
-        'gambar_home_atas': gambar_home_atas,
-        'gambar_home_bawah': gambar_home_bawah,
+        'products_part1': products_part1,
+        'products_part2': products_part2,
     }
     return render(request, 'myapp/home.html', context)
 
@@ -29,7 +30,7 @@ def product_detail(request, pk):
 
 def product_create(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('product_list')
@@ -51,6 +52,8 @@ def product_update(request, pk):
 def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
+        if product.image:
+            product.image.delete()
         product.delete()
         return redirect('product_list')
     return render(request, 'myapp/product_delete.html', {'product': product})
