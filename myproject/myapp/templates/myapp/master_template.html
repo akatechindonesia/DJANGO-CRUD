@@ -50,12 +50,31 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
+            {% if user.is_authenticated and not user.is_staff %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'member_list' %}"> Member</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'product_list' %}"> Produk</a>
               </li>
+              {% endif %}
+
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_buying' %}"> Produk</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout_view' %}"> logout</a>
+              </li>      
+              {% else %}
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'member_create' %}"> Register  </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login_view' %}"> Login  </a>
+              </li>
+              {% endif %}
           </ul>
         </div>
       </nav>

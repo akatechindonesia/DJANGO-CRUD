@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.template import loader
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
 from .models import Member, Product
 from .forms import ProductForm
 from .forms import MemberForm
-from django.conf import settings
+from .forms import LoginForm
+
 import os
 
 def home(request):
@@ -23,6 +29,49 @@ def home(request):
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'myapp/product_list.html', {'products': products})
+
+def product_buying(request):
+    products = Product.objects.all()
+    return render(request, 'myapp/product_buying.html', {'products': products})
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')        
+        product_name = request.POST.get('product_name')        
+        product_price = request.POST.get('product_price')        
+        # Simpan product_id ke dalam session
+        if 'cart' in request.session:
+            request.session['cart'].append((product_id, product_name, product_price))
+        else:
+            request.session['cart'] = [(product_id, product_name, product_price)]
+        
+        request.session.modified = True
+
+        return redirect('product_buying')
+    products = Product.objects.all()
+
+    return render(request, 'myapp/product_buying.html', {'products': products})
+
+def remove_from_cart(request, item_id):
+
+
+    if 'cart' in request.session:
+        cart = request.session['cart']
+        for item in cart:
+            if item[0] == str(item_id):
+                cart.remove(item)
+                break
+        request.session['cart'] = cart
+        request.session.modified = True
+    products = Product.objects.all()
+    return render(request, 'myapp/product_buying.html', {'products': products, 'item_id': item_id})
+
+def keranjang(request):
+    cart = request.session.get('cart', [])
+    context = {
+        'cart': cart
+    }
+    return render(request, 'myapp/keranjang.html', context)
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -94,3 +143,23 @@ def member_delete(request, pk):
         member.delete()
         return redirect('member_list')
     return render(request, 'myapp/member_delete.html', {'member': member})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  # Replace 'home' with the URL name of the main page after login
+            else:
+                form.add_error(None, 'Please enter a correct username and password. Note that both fields may be case-sensitive.')
+    else:
+        form = LoginForm()
+    return render(request, 'myapp/login_view.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')

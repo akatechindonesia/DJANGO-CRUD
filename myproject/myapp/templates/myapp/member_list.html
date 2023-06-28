@@ -15,7 +15,7 @@ Sunratu-Django
         <div class="row" style="padding: 10px">   
             <h1>Member List</h1>
             <a href="{% url 'member_create' %}"><button class="btn btn-success">Tambah Member</button></a>
-            <table class="table table-striped" style="width: 80%;" align="center">
+            <table class="table table-striped" style="width: 100%;" align="center">
                 <thead>
                 <tr>
                     <th>No</th>
@@ -23,6 +23,9 @@ Sunratu-Django
                     <th>Gender</th>
                     <th>Phone</th>
                     <th>Email</th>
+                    <th>Username</th>
+                    <th>is_active</th>
+                    <th>is_staff</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -34,6 +37,9 @@ Sunratu-Django
                     <td>{{ member.gender }}</td>
                     <td>{{ member.phone }}</td>
                     <td>{{ member.email }}</td>
+                    <td>{{ member.username }}</td>
+                    <td>{{ member.is_active }}</td>
+                    <td>{{ member.is_staff }}</td>
                     <td>
                         <a href="{% url 'member_detail' member.id %}" class="btn btn-primary btn-sm">View</a>
                       <a href="{% url 'member_update' member.id %}" class="btn btn-warning btn-sm">Edit</a>

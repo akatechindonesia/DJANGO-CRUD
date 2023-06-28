@@ -10,6 +10,13 @@ Sunratu-Django
   <div class="row text-center" style="padding: 10px">
     <div class="col">
       <h2 class="">Welcome to sunratu shop,</h2>
+
+      {% if user.is_authenticated %}
+      Hai, {{ user.username }}!, 
+      {% else %}
+      You are not logged in.
+      {% endif %}
+
       you can buy anything about clothes, tshirt, pant, trousers, and etc.
       <div class="container-body">
 
