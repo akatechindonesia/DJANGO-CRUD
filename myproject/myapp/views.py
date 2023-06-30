@@ -6,11 +6,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-from .models import Member, Product
+from .models import Member, Product, Transaction, TransactionItem
 from .forms import ProductForm
 from .forms import MemberForm
 from .forms import LoginForm
+from datetime import datetime
 
+import json
+import requests
 import os
 
 def home(request):
@@ -39,22 +42,18 @@ def add_to_cart(request):
         product_id = request.POST.get('product_id')        
         product_name = request.POST.get('product_name')        
         product_price = request.POST.get('product_price')        
-        # Simpan product_id ke dalam session
+
         if 'cart' in request.session:
             request.session['cart'].append((product_id, product_name, product_price))
         else:
             request.session['cart'] = [(product_id, product_name, product_price)]
         
         request.session.modified = True
-
         return redirect('product_buying')
     products = Product.objects.all()
-
     return render(request, 'myapp/product_buying.html', {'products': products})
 
 def remove_from_cart(request, item_id):
-
-
     if 'cart' in request.session:
         cart = request.session['cart']
         for item in cart:
@@ -66,12 +65,61 @@ def remove_from_cart(request, item_id):
     products = Product.objects.all()
     return render(request, 'myapp/product_buying.html', {'products': products, 'item_id': item_id})
 
-def keranjang(request):
+def product_final_trans(request):
     cart = request.session.get('cart', [])
+    member = request.POST.get('member')
+    total_amount = request.POST.get('total_amount')
+    product_item =  json.loads(request.POST.get('product_item')) 
+    product_itemx =  request.POST.get('product_item')
     context = {
-        'cart': cart
+        'cart': cart,
+        'member':member,
+        'total_amount':total_amount,
+        'product_item':product_item,
+        'product_itemx':product_itemx,
     }
-    return render(request, 'myapp/keranjang.html', context)
+    return render(request, 'myapp/product_final_trans.html', context)
+
+def product_buying_save(request):
+    member_id = request.POST.get('member')
+    total_amount = request.POST.get('total_amount')
+    product_item = json.loads(request.POST.get('product_item'))
+
+    transaction = Transaction.objects.create(member_id=member_id, total_amount=total_amount)
+
+    for product_id, product_data in product_item.items():
+        name = product_data['name']
+        jumlah = product_data['jumlah']
+        total = product_data['total']
+        product = get_object_or_404(Product, id=product_id)
+        TransactionItem.objects.create(transaction=transaction, product=product, quantity=jumlah, price=total)
+    request.session.pop('cart', None)
+    return redirect('history')
+
+def history(request):
+    user = request.user
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    
+    if user.is_authenticated and not user.is_staff and start_date:
+        transactions = Transaction.objects.filter(purchase_date__range=(start_date, end_date))
+        transaction_items = TransactionItem.objects.filter(transaction__in=transactions)
+    
+    if user.is_authenticated and user.is_staff:
+        transactions = Transaction.objects.filter(member=user)
+        transaction_items = TransactionItem.objects.filter(transaction__in=transactions)        
+
+    if user.is_authenticated and not user.is_staff and not start_date:
+        transactions = Transaction.objects.filter()
+        transaction_items = TransactionItem.objects.filter(transaction__in=transactions)
+
+    context = {
+        'transactions': transactions,
+        'transaction_items': transaction_items,
+    }
+
+    return render(request, 'myapp/history.html', context)
+
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -163,3 +211,17 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+def testing_api(request):
+    response = requests.get('https://pokeapi.co/api/v2/berry')
+    if response.status_code == 200:
+        data = response.json()
+        berries = data['results']
+    else:
+        berries = []
+
+    context = {
+        'berries': berries
+    }
+
+    return render(request, 'myapp/testing_api.html', context)

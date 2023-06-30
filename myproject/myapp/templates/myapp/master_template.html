@@ -57,22 +57,35 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'product_list' %}"> Produk</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'history' %}"> History</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout_view' %}"> logout ({{user.username}})</a>
+              </li>  
               {% endif %}
 
-              {% if user.is_authenticated %}
+              {% if user.is_authenticated and user.is_staff %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'product_buying' %}"> Produk</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout_view' %}"> logout</a>
-              </li>      
-              {% else %}
+                <a class="nav-link" href="{% url 'history' %}"> History</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout_view' %}"> logout ({{user.username}})</a>
+              </li> 
+              {% endif %}     
+              {%  if not user.is_authenticated %}
 
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'member_create' %}"> Register  </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'login_view' %}"> Login  </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'testing_api' %}"> Testing API  </a>
               </li>
               {% endif %}
           </ul>

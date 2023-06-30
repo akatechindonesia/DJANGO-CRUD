@@ -8,6 +8,9 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('products/', views.product_list, name='product_list'),
     path('product/buying/', views.product_buying, name='product_buying'),
+    path('product_buying_save/', views.product_buying_save, name='product_buying_save'),
+    path('history/', views.history, name='history'),
+    path('product_final_trans/', views.product_final_trans, name='product_final_trans'),
     path('product/buying/<int:product_id>/', views.product_buying, name='product_buying'),
     path('add_to_cart/', views.add_to_cart, name='add_to_cart'),
     path('remove_from_cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
@@ -22,6 +25,7 @@ urlpatterns = [
     path('members/<int:pk>/delete/', views.member_delete, name='member_delete'),
     path('login_view/', views.login_view, name='login_view'),
     path('logout_view/', views.logout_view, name='logout_view'),
+    path('testing_api/', views.testing_api, name='testing_api'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

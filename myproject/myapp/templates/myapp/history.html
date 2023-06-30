@@ -1,0 +1,73 @@
+{% extends "myapp/master_template.html" %}
+
+{% block title %}
+Sunratu-Django
+{% endblock %}
+
+{% block content %}
+{% load humanize %}
+<h2 class="mt-4">Transaction History</h2>
+<div class="form-inline mt-3 mb-3">
+    <form method="GET" action="">
+      <div class="form-group" style="display: inline-flex;">
+        <label for="start_date" style="margin-right: 10px; width: 120px">Start Date:</label>
+        <input type="date" class="form-control" id="start_date" name="start_date" style="margin-right: 10px; margin-top:-5px">
+      </div>
+      <div class="form-group ml-3" style="display: inline-flex;">
+        <label for="end_date" style="margin-right: 10px; width: 120px">End Date:</label>
+        <input type="date" class="form-control" id="end_date" name="end_date" style="margin-right: 10px; margin-top:-5px">
+      </div>
+      <button type="submit" class="btn btn-primary ml-3">Search</button>
+    </form>
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+  <div style="width: 50%;">
+    <h2>Transaction History</h2>
+    <table class="table table-striped">
+      <thead style="background-color: #333; color: white;">
+        <tr>
+          <th>Transaction ID</th>
+          <th>Member</th>
+          <th>Date</th>
+          <th>Total Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for transaction in transactions %}
+        <tr>
+          <td>{{ transaction.pk }}</td>
+          <td>{{ transaction.member }}</td>
+          <td>{{ transaction.purchase_date }}</td>
+          <td>Rp. {{ transaction.total_amount|intcomma }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div style="width: 45%;">
+    <h2>Transaction Items</h2>
+    <table class="table table-striped">
+      <thead style="background-color: #333; color: white;">
+        <tr>
+          <th>Transaction ID</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for transaction_item in transaction_items %}
+        <tr>
+          <td>{{ transaction_item.transaction.pk }}</td>
+          <td>{{ transaction_item.product }}</td>
+          <td>{{ transaction_item.quantity }}</td>
+          <td>Rp. {{ transaction_item.price|intcomma }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -5,6 +5,7 @@ Sunratu-Django
 {% endblock %}
 
 {% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <div class="container" style="background-color: aliceblue">
   <div class="row text-center" style="padding: 10px">
@@ -23,24 +24,63 @@ Sunratu-Django
         <div class="row" style="padding: 10px">
             {% for data in products_part1 %}
             <div class="col">
-              <img 
-              src="{{ media_url }}{{ data.image }}" 
-              class="img-thumbnail rounded" 
-              alt="satu"
-              data-toggle="modal" 
-              data-target="#myModal" />
+              <img src="{{ media_url }}{{ data.image }}" class="img-thumbnail rounded" alt="satu" data-toggle="modal" data-target="#modal{{ data.id }}">
             </div>
+                <!-- Modal -->
+                <div class="modal fade" id="modal{{ data.id }}" tabindex="-1" aria-labelledby="modal{{ data.id }}Label" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-body">
+                        <img src="{{ media_url }}{{ data.image }}" class="img-fluid" alt="satu" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Modal -->
             {% endfor %}
         </div>
 
           <div class="row" style="padding: 10px">
             {% for data in products_part2 %}
             <div class="col">
-              <img src="{{ media_url }}{{ data.image }}" class="img-thumbnail rounded" alt="satu" />
+              <img src="{{ media_url }}{{ data.image }}" class="img-thumbnail rounded" alt="satu" data-toggle="modal" data-target="#modal{{ data.id }}">
             </div>
+            <!-- Modal -->
+            <div class="modal fade" id="modal{{ data.id}}" tabindex="-1" aria-labelledby="modal{{ data.id }}Label" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <img src="{{ media_url }}{{ data.image }}" class="img-fluid" alt="satu" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Modal -->
             {% endfor %}
           </div>
-            
+
+<script>
+  $(document).ready(function() {
+    $('.img-thumbnail').on('click', function() {
+      var targetModal = $(this).data('target');
+      $(targetModal).modal('show');
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
         <h3>
           Kami juga bisa melayani pembelian secara online dengan cara sebagai
           berikut :
@@ -52,32 +92,6 @@ Sunratu-Django
           <span class="blink_me">via Whatsup : 0853 3832 1400</span>
         </h5>
 
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Header Modal -->
-        <div class="modal-header">
-          <h4 class="modal-title">Gambar Modal</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Body Modal -->
-        <div class="modal-body">
-          <img src="path/to/your/image.jpg" alt="Gambar Modal" class="img-fluid">
-        </div>
-        
-        <!-- Footer Modal -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-        </div>
-        
       </div>
     </div>
   </div>

@@ -1,0 +1,83 @@
+{% extends "myapp/master_template.html" %}
+
+{% block title %}
+Sunratu-Django
+{% endblock %}
+
+{% block content %}
+
+<div style="display: flex; justify-content: center;">
+<div class="container mt-5" style=" width: 500px;">
+    <div class="row">
+        <div class="col" style="background-color: rgb(244, 240, 240);">
+
+        <form action="{% url 'product_buying_save' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="member" value="{{user.id}}">
+          <input type="hidden" name="total_amount" id="total_amount" value="{{total_amount}}" >
+          <input type="hidden" name="product_item" id="product_item" value='{{ product_itemx }}'>
+
+          <script>
+            var productItemValue = document.getElementById("product_item").value;
+            var productItemObj;
+          
+            try {
+              productItemObj = JSON.parse(productItemValue);
+              // Data product_item merupakan objek JSON yang valid
+              console.log("Data product_item adalah objek JSON yang valid:", productItemObj);
+            } catch (error) {
+              // Data product_item bukan objek JSON yang valid
+              console.error("Data product_item bukan objek JSON yang valid:", error);
+            }
+          </script>
+
+
+<table class="table ">
+    <tr>
+        <td colspan="3"><h3><b>Detail Informasi Pemesanan !</b></h3></td>
+        </tr>
+    <tr>
+        <td>Member ID</td>
+        <td>:</td>
+        <td>{{member}}</td>
+    </tr>
+    <tr>
+        <td>Username</td>
+        <td>:</td>
+        <td>{{user.username}}</td>
+    </tr>
+</table>
+
+<table class="table">
+    <thead>
+      <th>No</th>
+      <th>Nama Produk</th>
+      <th>Jml</th>
+      <th>Sub Total</th>
+    </thead>
+    {% for productId, product in product_item.items %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ productId }} - {{ product.name }}</td>
+        <td>{{ product.jumlah }}</td>
+        <td>{{ product.total }}</td>
+      </tr>
+    {% endfor %}
+    <tr style="font-weight: bold;">
+      <td colspan="3">TOTAL</td>
+      <td>{{ total_amount }}</td>
+    </tr>
+  </table>
+  <hr>
+  <input type="submit" class="btn btn-success mb-3">
+  </form>
+
+</div>
+</div>
+</div>
+</div>
+
+<script>
+</script>
+
+{% endblock %}
